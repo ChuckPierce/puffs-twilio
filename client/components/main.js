@@ -14,7 +14,11 @@ const Main = (props) => {
   const {children, handleClick, isLoggedIn} = props
 
   return (
-    <div>
+    <div className="appContainer">
+      <div>
+        <img src="/img/puffs_vertical.jpg" width="500px" height="100%"/>
+      </div>
+      <div className="mainContainer">
       <nav>
         {
           isLoggedIn
@@ -32,6 +36,7 @@ const Main = (props) => {
       </nav>
       <hr />
       {children}
+      </div>
     </div>
   )
 }

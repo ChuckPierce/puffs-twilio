@@ -14,9 +14,6 @@ const User = db.define('user', {
   salt: {
     type: Sequelize.STRING
   },
-  googleId: {
-    type: Sequelize.STRING
-  }
 })
 
 module.exports = User

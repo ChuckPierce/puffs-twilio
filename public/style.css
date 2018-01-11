@@ -1,5 +1,11 @@
+html {
+  height: 100%;
+}
+
 body {
   font-family: sans-serif;
+  margin: 0px;
+  height: 100%;
 }
 
 a {
@@ -18,4 +24,12 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+appContainer {
+  display: flex;
+}
+
+mainContainer {
+  flex: auto;
 }
