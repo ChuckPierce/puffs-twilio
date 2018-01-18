@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
+const Message = require('../db/models/message')
 module.exports = router
 
 router.post('/login', (req, res, next) => {
@@ -17,7 +18,12 @@ router.post('/login', (req, res, next) => {
 })
 
 router.post('/signup', (req, res, next) => {
-  User.create(req.body)
+  Message.create({ text: ''})
+    .then(message => {
+      const body = req.body
+      body.messageId = message.id
+      return User.create(body)
+    })
     .then(user => {
       req.login(user, err => (err ? next(err) : res.json(user)))
     })

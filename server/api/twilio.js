@@ -5,14 +5,19 @@ const authToken = process.env.TWILIO_AUTH
 module.exports = router
 
 router.post('/', (req, res, next) => {
+    console.log(req.body.Body === 'PUFFS')
+    console.log(req)
     const twiml = new MessagingResponse()
-    twiml.message('The Robots are coming! Head for the hills!')
-    res.writeHead(200, {'Content-Type': 'text/xml'})
-    res.end(twiml.toString())
+    if (req.body.Body === 'PUFFS') {
+      const message = twiml.message()
+      message.body('This is a cool code!')
+      message.media('https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg')
+    }
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
   })
 
 
-// require the Twilio module and create a REST client
 const client = require('twilio')(accountSid, authToken);
 router.post('/send', (req, res, next) => {
   const number = req.body.phoneNumber

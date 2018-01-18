@@ -14,6 +14,10 @@ const User = db.define('user', {
   salt: {
     type: Sequelize.STRING
   },
+  phoneNumber: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
 })
 
 module.exports = User

@@ -2,18 +2,29 @@ import axios from 'axios'
 
 const GET_MESSAGE = 'GET_MESSAGE'
 const SEND_MESSAGE = 'SEND_MESSAGE'
+const UPDATE_MESSAGE = 'UPDATE_MESSAGE'
 
-const defaultMessage = ''
+const defaultMessage = {}
 
-const getMessage = text => ({ type: GET_MESSAGE, text})
-const postMessage = text => ({ type: SEND_MESSAGE, text})
+const getMessage = msg => ({ type: GET_MESSAGE, msg})
+const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 
-export const message = text =>
+export const updateMessage = value => ({ type: UPDATE_MESSAGE, value})
+
+export const message = msg =>
     dispatch =>
-        axios.post('/api/message', { text })
+        axios.post('/api/message', { msg })
             .then(res => {
-                dispatch(getMessage(res.data.text))
+                dispatch(getMessage(res.data))
             })
+
+export const getUserMessage = messageId =>
+    dispatch =>
+        axios.get(`/api/message/${messageId}`)
+            .then(res => {
+                dispatch(getMessage(res.data))
+            })
+
 export const sendMessage = phoneNumber =>
     dispatch =>
         axios.post('/api/sms/send', { phoneNumber })
@@ -25,9 +36,11 @@ export const sendMessage = phoneNumber =>
 export default function (state = defaultMessage, action) {
     switch (action.type) {
         case GET_MESSAGE:
-            return action.text
+            return action.msg
         case SEND_MESSAGE:
             return action.phoneNumber
+        case UPDATE_MESSAGE:
+            return {...state, text: action.value}
         default:
             return state
     }
