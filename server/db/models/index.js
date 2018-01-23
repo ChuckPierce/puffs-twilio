@@ -1,5 +1,6 @@
 const User = require('./user')
 const Message = require('./message')
+const Subscriber = require('./subscriber')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -16,5 +17,6 @@ Message.hasOne(User)
  */
 module.exports = {
   User,
-  Message
+  Message,
+  Subscriber
 }

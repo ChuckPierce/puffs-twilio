@@ -18,16 +18,19 @@ async function seed () {
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
 
+  const message1 = await Message.create({ text: 'new message'})
+  const message2 = await Message.create({ text: 'new message2'})
+
+
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123', phoneNumber: '1234'}),
-    User.create({email: 'murphy@email.com', password: '123', phoneNumber: '12345'})
+    User.create({email: 'cody@email.com', password: '123', phoneNumber: '1234', messageId: message1.id }),
+    User.create({email: 'murphy@email.com', password: '123', phoneNumber: '12345', messageId: message2.id })
   ])
 
-  const message = await Message.create({ text: 'new message'})
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded ${users.length} users`)
-  console.log(message)
+  console.log(message1)
   console.log(`seeded successfully`)
 }
 

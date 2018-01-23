@@ -55,7 +55,7 @@ const mapDispatch = (dispatch) => {
   return {
     loadInitialData () {
       dispatch(me()).then(user => {
-        dispatch(getUserMessage(user.messageId))
+        if (user.messageId) dispatch(getUserMessage(user.messageId))
       })
     }
   }

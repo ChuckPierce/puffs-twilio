@@ -7,6 +7,10 @@ const Message = db.define('message', {
     },
     url: {
       type: Sequelize.STRING,
+    },
+    phone: {
+      type: Sequelize.STRING,
+      defaultValue: process.env.TWILIO_NUMBER,
     }
   })
   module.exports = Message
