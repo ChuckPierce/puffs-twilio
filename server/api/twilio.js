@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
 
 const client = require('twilio')(accountSid, authToken);
 router.post('/send', (req, res, next) => {
-  const body = req.body.phoneNumber
+  const msg = req.body
   Subscriber.findAll({
     attributes: ['phone']
   }).then(numbers => {
@@ -38,12 +38,12 @@ router.post('/send', (req, res, next) => {
         .create({
           to: num.phone,
           from: process.env.TWILIO_NUMBER,
-          body,
-          // mediaUrl: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg',
+          body: msg.text,
+          mediaUrl: msg.url,
         })
     }))
     .then(() => {
-      res.json(body)
+      res.json(msg)
     })
   })
   .catch(next)

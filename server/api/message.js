@@ -5,7 +5,7 @@ module.exports = router
 router.post('/', (req, res, next) => {
   Message.findById(req.body.msg.id)
       .then(message => {
-        return message.updateAttributes({ text: req.body.msg.text })
+        return message.updateAttributes({ text: req.body.msg.text, url: req.body.msg.url })
       })
       .then(msg => {
         res.json(msg)
