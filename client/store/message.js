@@ -4,6 +4,7 @@ const GET_MESSAGE = 'GET_MESSAGE'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 const UPDATE_MESSAGE = 'UPDATE_MESSAGE'
 const UPDATE_URL = 'UPDATE_URL'
+const UPDATE_PRIMARY = 'UPDATE_PRIMARY'
 
 const defaultMessage = {}
 
@@ -12,6 +13,7 @@ const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 
 export const updateMessage = value => ({ type: UPDATE_MESSAGE, value})
 export const updateUrl = value => ({ type: UPDATE_URL, value})
+export const updatePrimary = value => ({ type: UPDATE_PRIMARY, value})
 
 export const message = msg =>
     dispatch =>
@@ -45,6 +47,8 @@ export default function (state = defaultMessage, action) {
             return {...state, text: action.value}
         case UPDATE_URL:
             return {...state, url: action.value}
+        case UPDATE_PRIMARY:
+            return {...state, primary: action.value}
         default:
             return state
     }

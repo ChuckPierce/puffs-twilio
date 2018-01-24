@@ -7,6 +7,10 @@ const Message = db.define('message', {
     },
     url: {
       type: Sequelize.STRING,
+    },
+    primary: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
     }
   })
   module.exports = Message

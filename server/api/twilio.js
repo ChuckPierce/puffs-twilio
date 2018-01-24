@@ -12,18 +12,26 @@ router.post('/', (req, res, next) => {
     text = text.toLowerCase().trim()
     const fromNumber = req.body.From
     if (text === 'puffs') {
-      message.body('This is a cool code! To be removed from the list text "STOP"')
-      // message.media('https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg')
-      Subscriber.findOne({ where: { phone: fromNumber }}).then(sub => {
-        if (!sub) {
-          Subscriber.create({ phone: fromNumber, subscribed: true })
-        } else {
-          sub.updateAttributes({ subscribed: true })
-        }
+      Message.findOne({where: {primary: true}}).then(data => {
+        console.log(data.text)
+        console.log(data.url)
+        console.log(message)
+        message.body(data.text)
+        message.media(data.url)
+        res.writeHead(200, {'Content-Type': 'text/xml'});
+        res.end(twiml.toString());
+        Subscriber.findOne({ where: { phone: fromNumber }}).then(sub => {
+          if (!sub) {
+            Subscriber.create({ phone: fromNumber, subscribed: true })
+          } else {
+            sub.updateAttributes({ subscribed: true })
+          }
+        })
       })
+    } else {
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(twiml.toString());
     }
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
   })
 
 

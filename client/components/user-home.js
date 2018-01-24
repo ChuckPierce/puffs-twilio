@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {message, sendMessage, updateMessage, updateUrl} from '../store'
+import {message, sendMessage, updateMessage, updateUrl, updatePrimary} from '../store'
 
 /**
  * COMPONENT
  */
 export const UserHome = (props) => {
-  const {email, msg, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate, handleUrlUpdate} = props
+  const {email, msg, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate, handleUrlUpdate, handlePrimaryChange} = props
   return (
     <div>
       <h3>Welcome, {email}</h3>
@@ -17,6 +17,9 @@ export const UserHome = (props) => {
             <input type="text" name="text" value={msg.text || ''} onChange={handleMessageUpdate} />
             <label htmlFor="message"><small>Media Url</small></label>
             <input type="text" name="url" value={msg.url || ''} onChange={handleUrlUpdate} />
+            <label><small>Primary Message</small></label>
+            Yes <input type="radio" name="primary_yes" value={msg.primary} checked={msg.primary} onChange={handlePrimaryChange.bind(null, true)} />
+            No <input type="radio" name="primary_no" value={!msg.primary} checked={!msg.primary} onChange={handlePrimaryChange.bind(null, false)} />
           </div>
           <button type="submit">Save</button>
         </form>
@@ -63,6 +66,9 @@ const mapDispatch = (dispatch) => {
     },
     handleUrlUpdate(evt) {
       dispatch(updateUrl(evt.target.value))
+    },
+    handlePrimaryChange(val) {
+      dispatch(updatePrimary(val))
     }
   }
 }
