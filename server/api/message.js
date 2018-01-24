@@ -3,10 +3,8 @@ const { Message } = require('../db/models')
 module.exports = router
 
 router.post('/', (req, res, next) => {
-  console.log(req.body)
   Message.findById(req.body.msg.id)
       .then(message => {
-        console.log(message)
         return message.updateAttributes({ text: req.body.msg.text })
       })
       .then(msg => {
