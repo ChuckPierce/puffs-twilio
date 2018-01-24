@@ -31,19 +31,19 @@ const client = require('twilio')(accountSid, authToken);
 router.post('/send', (req, res, next) => {
   const body = req.body.phoneNumber
   Subscriber.findAll({
-    attributes: ['value']
+    attributes: ['phone']
   }).then(numbers => {
     return Promise.all(numbers.map(num => {
       return client.messages
         .create({
-          to: num.value,
+          to: num.phone,
           from: process.env.TWILIO_NUMBER,
           body,
           // mediaUrl: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg',
         })
     }))
     .then(() => {
-      res.end()
+      res.json(body)
     })
   })
   .catch(next)

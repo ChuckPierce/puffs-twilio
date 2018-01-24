@@ -29,7 +29,7 @@ export const sendMessage = phoneNumber =>
     dispatch =>
         axios.post('/api/sms/send', { phoneNumber })
             .then(res => {
-                dispatch(postMessage(res.data.phoneNumber))
+                dispatch(postMessage(res.data))
             })
 
 
@@ -38,7 +38,7 @@ export default function (state = defaultMessage, action) {
         case GET_MESSAGE:
             return action.msg
         case SEND_MESSAGE:
-            return action.phoneNumber
+            return action.msg
         case UPDATE_MESSAGE:
             return {...state, text: action.value}
         default:

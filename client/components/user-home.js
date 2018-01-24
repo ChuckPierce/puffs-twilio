@@ -14,14 +14,14 @@ export const UserHome = (props) => {
         <form onSubmit={handleMessageSubmit.bind(null, msg)} name="messageSubmit">
           <div>
             <label htmlFor="message"><small>Message</small></label>
-            <input type="text" name="text" value={msg.text || ''} onChange={handleMessageUpdate}/>
+            <input type="text" name="text" value={msg.text || ''} onChange={handleMessageUpdate} />
           </div>
           <button type="submit">Save</button>
         </form>
         <form onSubmit={handlePhoneSubmit} name="phoneSubmit">
           <div>
-            <label htmlFor="send"><small>Send To Phone Number</small></label>
-            <input type="text" name="phone"/>
+            <label htmlFor="send"><small>Send Message To Subscribers</small></label>
+            <input type="text" name="phone" />
           </div>
           <button type="submit">Send</button>
         </form>
