@@ -1,45 +1,58 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {message, sendMessage, updateMessage, updateUrl, updatePrimary} from '../store'
+import {message, sendMessage, updateMessage} from '../store'
+
 
 /**
  * COMPONENT
  */
 export const UserHome = (props) => {
-  const {email, msg, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate} = props
+  const {msg, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate} = props
   return (
-    <div>
-        <form onSubmit={handleMessageSubmit.bind(null, msg)} name="messageSubmit">
-          <div>
-            <div>
-              <label htmlFor="message"><small>Message</small></label>
-              <textarea name="text" value={msg.text || ''} onChange={handleMessageUpdate} />
-            </div>
-            <div>
-              <label htmlFor="message"><small>Media Url</small></label>
-              <input type="text" name="url" value={msg.url || ''} onChange={handleMessageUpdate} />
-            </div>
-            <div>
-              <label htmlFor="keyword"><small>Keyword</small></label>
-              <input type="keyword" name="keyword" value={msg.keyword || ''} onChange={handleMessageUpdate} />
-            </div>
-              <div>
-              <label><small>Primary Message</small></label>
-              <small>Yes</small> <input type="radio" name="primary_yes" value="primary_yes" checked={!!msg.primary} onChange={handleMessageUpdate} />
-              <small> No</small> <input type="radio" name="primary_no" value="primary_no" checked={!msg.primary} onChange={handleMessageUpdate} />
-            </div>
+    <div className="formContainer">
+        <h4>Response message</h4>
+        <form onSubmit={handleMessageSubmit.bind(null, msg)} name="messageSubmit" className="mb-5">
+          <div className="form-group">
+            <label htmlFor="message">Message</label>
+            <textarea className="form-control" name="text" value={msg.text || ''} onChange={handleMessageUpdate} />
           </div>
-          <button type="submit">Save</button>
+          <div className="form-group">
+            <label htmlFor="message">Media Url</label>
+            <input className="form-control" type="text" name="url" value={msg.url || ''} onChange={handleMessageUpdate} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="keyword">Keyword</label>
+            <input className="form-control" type="keyword" name="keyword" value={msg.keyword || ''} onChange={handleMessageUpdate} />
+          </div>
+          <div className="form-group">
+            <label>Primary Message</label>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" name="primary_yes" value="primary_yes" id="primary_yes" checked={!!msg.primary} onChange={handleMessageUpdate} />
+              <label className="form-check-label" htmlFor="primary_yes">
+                Yes
+              </label>
+            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" name="primary_no" value="primary_no" id="primary_no" checked={!msg.primary} onChange={handleMessageUpdate} />
+              <label className="form-check-label" htmlFor="primary_no">
+                No
+              </label>
+          </div>
+          </div>
+            <button type="submit" className="btn btn-primary">Save message</button>
         </form>
+        <h4>Send a message</h4>
         <form onSubmit={handlePhoneSubmit} name="phoneSubmit">
-          <div>
-            <label htmlFor="send"><small>Send Message To Subscribers</small></label>
-            <input type="text" name="phone_msg" />
-            <label htmlFor="message"><small>Media Url</small></label>
-            <input type="text" name="phone_url" />
+          <div className="form-group">
+            <label htmlFor="send">Message</label>
+            <textarea className="form-control" name="phone_msg" />
           </div>
-          <button type="submit">Send</button>
+          <div className="form-group">
+            <label htmlFor="message">Media Url</label>
+            <input className="form-control" type="text" name="phone_url" />
+          </div>
+          <button type="submit" className="btn btn-primary">Send message</button>
         </form>
     </div>
   )

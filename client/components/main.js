@@ -16,25 +16,24 @@ const Main = (props) => {
   return (
     <div className="appContainer">
       <div>
-        <img src="/img/puffs_vertical.jpg" width="500px" height="100%"/>
+        <img src="/img/puffs_vertical.jpg" width="500px" height="100%" />
       </div>
       <div className="mainContainer">
-      <nav>
+      <nav className="border-bottom">
         {
           isLoggedIn
-            ? <div>
+            ? <React.Fragment>
               {/* The navbar will show these links after you log in */}
               <Link to="/home">Home</Link>
               <a href="#" onClick={handleClick}>Logout</a>
-            </div>
-            : <div>
+            </React.Fragment>
+            : <React.Fragment>
               {/* The navbar will show these links before you log in */}
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
-            </div>
+            </React.Fragment>
         }
       </nav>
-      <hr />
       {children}
       </div>
     </div>
