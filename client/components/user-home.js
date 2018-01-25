@@ -87,7 +87,6 @@ const mapDispatch = (dispatch) => {
       const target = evt.target
       const value = target.type === 'radio' ? target.name === 'primary_yes' : target.value
       const name = target.type === 'radio' ? 'primary' : target.name
-      console.log({ value, name })
       dispatch(updateMessage({ value, name }))
     },
   }
