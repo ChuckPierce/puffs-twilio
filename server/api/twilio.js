@@ -11,27 +11,25 @@ router.post('/', (req, res, next) => {
     let text = req.body.Body || ''
     text = text.toLowerCase().trim()
     const fromNumber = req.body.From
-    if (text === 'puffs') {
-      Message.findOne({where: {primary: true}}).then(data => {
-        console.log(data.text)
-        console.log(data.url)
-        console.log(message)
-        message.body(data.text)
-        message.media(data.url)
-        res.writeHead(200, {'Content-Type': 'text/xml'});
-        res.end(twiml.toString());
-        Subscriber.findOne({ where: { phone: fromNumber }}).then(sub => {
-          if (!sub) {
-            Subscriber.create({ phone: fromNumber, subscribed: true })
-          } else {
-            sub.updateAttributes({ subscribed: true })
-          }
-        })
+    Message.findOne({where: {primary: true}}).then(data => {
+      const keyword = data.keyword && data.keyword.toLowerCase().trim()
+      if (text === keyword) {
+          message.body(data.text)
+          if (data.url) message.media(data.url)
+          Subscriber.findOne({ where: { phone: fromNumber }}).then(sub => {
+            if (!sub) {
+              Subscriber.create({ phone: fromNumber, subscribed: true })
+            } else {
+              sub.updateAttributes({ subscribed: true })
+            }
+          })
+          res.writeHead(200, {'Content-Type': 'text/xml'});
+          res.end(twiml.toString());
+        } else {
+          res.writeHead(200, {'Content-Type': 'text/xml'});
+          res.end(twiml.toString());
+        }
       })
-    } else {
-      res.writeHead(200, {'Content-Type': 'text/xml'});
-      res.end(twiml.toString());
-    }
   })
 
 
@@ -42,13 +40,13 @@ router.post('/send', (req, res, next) => {
     attributes: ['phone']
   }).then(numbers => {
     return Promise.all(numbers.map(num => {
-      return client.messages
-        .create({
-          to: num.phone,
-          from: process.env.TWILIO_NUMBER,
-          body: msg.text,
-          mediaUrl: msg.url,
-        })
+      const obj = {
+        to: num.phone,
+        from: process.env.TWILIO_NUMBER,
+        body: msg.text,
+      }
+      if (msg.url) obj.mediaUrl = msg.url
+      return client.messages.create(obj)
     }))
     .then(() => {
       res.json(msg)

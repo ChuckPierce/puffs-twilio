@@ -3,17 +3,13 @@ import axios from 'axios'
 const GET_MESSAGE = 'GET_MESSAGE'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 const UPDATE_MESSAGE = 'UPDATE_MESSAGE'
-const UPDATE_URL = 'UPDATE_URL'
-const UPDATE_PRIMARY = 'UPDATE_PRIMARY'
 
 const defaultMessage = {}
 
 const getMessage = msg => ({ type: GET_MESSAGE, msg})
 const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 
-export const updateMessage = value => ({ type: UPDATE_MESSAGE, value})
-export const updateUrl = value => ({ type: UPDATE_URL, value})
-export const updatePrimary = value => ({ type: UPDATE_PRIMARY, value})
+export const updateMessage = valObj => ({ type: UPDATE_MESSAGE, valObj})
 
 export const message = msg =>
     dispatch =>
@@ -42,13 +38,9 @@ export default function (state = defaultMessage, action) {
         case GET_MESSAGE:
             return action.msg
         case SEND_MESSAGE:
-            return action.msg
+            return state
         case UPDATE_MESSAGE:
-            return {...state, text: action.value}
-        case UPDATE_URL:
-            return {...state, url: action.value}
-        case UPDATE_PRIMARY:
-            return {...state, primary: action.value}
+            return {...state, [action.valObj.name]: action.valObj.value}
         default:
             return state
     }

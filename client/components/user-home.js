@@ -7,19 +7,28 @@ import {message, sendMessage, updateMessage, updateUrl, updatePrimary} from '../
  * COMPONENT
  */
 export const UserHome = (props) => {
-  const {email, msg, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate, handleUrlUpdate, handlePrimaryChange} = props
+  const {email, msg, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate} = props
   return (
     <div>
-      <h3>Welcome, {email}</h3>
         <form onSubmit={handleMessageSubmit.bind(null, msg)} name="messageSubmit">
           <div>
-            <label htmlFor="message"><small>Message</small></label>
-            <input type="text" name="text" value={msg.text || ''} onChange={handleMessageUpdate} />
-            <label htmlFor="message"><small>Media Url</small></label>
-            <input type="text" name="url" value={msg.url || ''} onChange={handleUrlUpdate} />
-            <label><small>Primary Message</small></label>
-            Yes <input type="radio" name="primary_yes" value={msg.primary} checked={msg.primary} onChange={handlePrimaryChange.bind(null, true)} />
-            No <input type="radio" name="primary_no" value={!msg.primary} checked={!msg.primary} onChange={handlePrimaryChange.bind(null, false)} />
+            <div>
+              <label htmlFor="message"><small>Message</small></label>
+              <textarea name="text" value={msg.text || ''} onChange={handleMessageUpdate} />
+            </div>
+            <div>
+              <label htmlFor="message"><small>Media Url</small></label>
+              <input type="text" name="url" value={msg.url || ''} onChange={handleMessageUpdate} />
+            </div>
+            <div>
+              <label htmlFor="keyword"><small>Keyword</small></label>
+              <input type="keyword" name="keyword" value={msg.keyword || ''} onChange={handleMessageUpdate} />
+            </div>
+              <div>
+              <label><small>Primary Message</small></label>
+              <small>Yes</small> <input type="radio" name="primary_yes" value="primary_yes" checked={!!msg.primary} onChange={handleMessageUpdate} />
+              <small> No</small> <input type="radio" name="primary_no" value="primary_no" checked={!msg.primary} onChange={handleMessageUpdate} />
+            </div>
           </div>
           <button type="submit">Save</button>
         </form>
@@ -62,14 +71,12 @@ const mapDispatch = (dispatch) => {
       dispatch(sendMessage({text, url}))
     },
     handleMessageUpdate(evt) {
-      dispatch(updateMessage(evt.target.value))
+      const target = evt.target
+      const value = target.type === 'radio' ? target.name === 'primary_yes' : target.value
+      const name = target.type === 'radio' ? 'primary' : target.name
+      console.log({ value, name })
+      dispatch(updateMessage({ value, name }))
     },
-    handleUrlUpdate(evt) {
-      dispatch(updateUrl(evt.target.value))
-    },
-    handlePrimaryChange(val) {
-      dispatch(updatePrimary(val))
-    }
   }
 }
 
