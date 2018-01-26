@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {auth, getUserMessage} from '../store'
+import {auth, getUserMessages} from '../store'
 
 /**
  * COMPONENT
@@ -59,8 +59,8 @@ const mapDispatch = (dispatch) => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName)).then(user => {
-        if (user.messageId) dispatch(getUserMessage(user.messageId))
+      dispatch(auth(email, password, formName)).then(() => {
+        dispatch(getUserMessages())
       })
     }
   }

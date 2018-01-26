@@ -4,7 +4,7 @@ import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 import {Main, Login, Signup, UserHome} from './components'
-import {me, getUserMessage} from './store'
+import {me, getUserMessages} from './store'
 
 /**
  * COMPONENT
@@ -55,8 +55,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadInitialData () {
-      dispatch(me()).then(user => {
-        if (user.messageId) dispatch(getUserMessage(user.messageId))
+      dispatch(me()).then(() => {
+        dispatch(getUserMessages())
       })
     }
   }

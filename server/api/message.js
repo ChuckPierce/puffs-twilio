@@ -20,3 +20,11 @@ router.get('/:messageId', (req, res, next) => {
     res.json(message)
   }).catch(err => next(err))
 })
+
+router.get('/', (req, res, next) => {
+  Message.findAll({
+    attributes: ['id', 'text', 'keyword', 'url', 'primary']
+  })
+    .then(messages => res.json(messages))
+    .catch(next)
+})

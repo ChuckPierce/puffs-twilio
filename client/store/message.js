@@ -1,28 +1,28 @@
 import axios from 'axios'
 
-const GET_MESSAGE = 'GET_MESSAGE'
+const GET_MESSAGES = 'GET_MESSAGES'
 const SEND_MESSAGE = 'SEND_MESSAGE'
-const UPDATE_MESSAGE = 'UPDATE_MESSAGE'
+const UPDATE_MESSAGES = 'UPDATE_MESSAGES'
 
-const defaultMessage = {}
+const defaultMessages = []
 
-const getMessage = msg => ({ type: GET_MESSAGE, msg})
+const getMessages = msgs => ({ type: GET_MESSAGES, msgs})
 const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 
-export const updateMessage = valObj => ({ type: UPDATE_MESSAGE, valObj})
+export const updateMessages = valObj => ({ type: UPDATE_MESSAGES, valObj})
 
 export const message = msg =>
     dispatch =>
         axios.post('/api/message', { msg })
             .then(res => {
-                dispatch(getMessage(res.data))
+                dispatch(getMessages(res.data))
             })
 
-export const getUserMessage = messageId =>
+export const getUserMessages = () =>
     dispatch =>
-        axios.get(`/api/message/${messageId}`)
+        axios.get(`/api/message`)
             .then(res => {
-                dispatch(getMessage(res.data))
+                dispatch(getMessages(res.data))
             })
 
 export const sendMessage = msgObject =>
@@ -33,14 +33,18 @@ export const sendMessage = msgObject =>
             })
 
 
-export default function (state = defaultMessage, action) {
+export default function (state = defaultMessages, action) {
     switch (action.type) {
-        case GET_MESSAGE:
-            return action.msg
+        case GET_MESSAGES:
+            return action.msgs
         case SEND_MESSAGE:
             return state
-        case UPDATE_MESSAGE:
-            return {...state, [action.valObj.name]: action.valObj.value}
+        case UPDATE_MESSAGES:
+            return state.map(msg => {
+                let name = action.valObj.name.replace(action.valObj.id, '')
+                if (action.valObj.id === msg.id) return {...msg, [name]: action.valObj.value}
+                return msg
+            })
         default:
             return state
     }
