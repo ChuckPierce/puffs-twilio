@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {saveMessage, sendMessage, updateMessages} from '../store'
+import {saveMessage, sendMessage, updateMessages, createMessage} from '../store'
 import ResponseForm from './message-form'
 
 
@@ -9,13 +9,15 @@ import ResponseForm from './message-form'
  * COMPONENT
  */
 export const UserHome = (props) => {
-  const {messages, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate} = props
+  const {messages, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate, handleCreateClick} = props
+
   return (
     <div className="formContainer">
-        {messages.reverse().map((msg, i) => {
+        <button className="btn btn-primary" onClick={handleCreateClick}>+ Create New Response</button>
+        {messages.map((msg, i) => {
           return (
             <div key={msg.id}>
-              <h4>Response message {i + 1}</h4>
+              <h4>Response message {messages.length - i}</h4>
               <ResponseForm onSubmit={handleMessageSubmit} onUpdate={handleMessageUpdate} message={msg} />
             </div>
           )
@@ -63,6 +65,10 @@ const mapDispatch = (dispatch) => {
       const name = target.type === 'radio' ? 'primary' : target.name
       dispatch(updateMessages({ value, name, id }))
     },
+    handleCreateClick(evt) {
+      evt.preventDefault()
+      dispatch(createMessage())
+    }
   }
 }
 

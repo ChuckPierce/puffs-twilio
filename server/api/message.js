@@ -15,6 +15,14 @@ router.post('/', (req, res, next) => {
       })
   })
 
+router.post('/new', (req, res, next) => {
+  Message.create({ text: '' }).then(newMessage => {
+    res.json({ id: newMessage.id, text: newMessage.text, keyword: newMessage.keyword, url: newMessage.url, primary: newMessage.primary })
+  }).catch(err => {
+    next(err)
+  })
+})
+
 router.get('/:messageId', (req, res, next) => {
   Message.findOne({ where: { id: req.params.messageId }}).then(message => {
     res.json(message)
