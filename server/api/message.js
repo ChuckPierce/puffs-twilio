@@ -11,7 +11,11 @@ router.post('/', (req, res, next) => {
         res.json(msg)
       })
       .catch(err => {
+        if (err.name === 'SequelizeUniqueConstraintError' && err.fields.keyword) {
+          res.status(401).send('Keyword already exists')
+        } else {
           next(err)
+        }
       })
   })
 

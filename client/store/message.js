@@ -1,10 +1,13 @@
 import axios from 'axios'
+import { setTimeout } from 'timers';
 
 const GET_MESSAGES = 'GET_MESSAGES'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 const UPDATE_MESSAGES = 'UPDATE_MESSAGES'
 const CREATE_MESSAGE = 'CREATE_MESSAGE'
 const DELETE_MESSAGE = 'DELETE_MESSAGE'
+const ALERT = 'ALERT'
+const DELETE_ALERT = 'DELETE_ALERT'
 
 const defaultMessages = []
 
@@ -12,6 +15,15 @@ const getMessages = msgs => ({ type: GET_MESSAGES, msgs})
 const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 const createMsg = msg => ({ type: CREATE_MESSAGE, msg})
 const deleteMsg = msg => ({ type: DELETE_MESSAGE, msg})
+const alert = obj => ({ type: ALERT, alert: obj })
+const deleteAlert = id => ({ type: DELETE_ALERT, id })
+
+const createAndDeleteAlert = (dispatch, text, id) => {
+    dispatch(alert({text: text, id: id }))
+    setTimeout(() => {
+        dispatch(deleteAlert(id))
+    }, 3000)
+}
 
 export const updateMessages = valObj => ({ type: UPDATE_MESSAGES, valObj})
 
@@ -20,6 +32,10 @@ export const saveMessage = msg =>
         axios.post('/api/message', { msg })
             .then(res => {
                 dispatch(postMessage(res.data))
+                createAndDeleteAlert(dispatch, 'Saved!', msg.id)
+            })
+            .catch(err => {
+                createAndDeleteAlert(dispatch, err.response.data, msg.id)
             })
 
 export const getUserMessages = () =>
@@ -68,6 +84,16 @@ export default function (state = defaultMessages, action) {
             return state.slice(0)
         case DELETE_MESSAGE:
             return state.filter(msg => msg.id !== action.msg)
+        case ALERT:
+            return state.map(msg => {
+                if (action.alert.id === msg.id) return {...msg, alert: action.alert.text }
+                return msg
+            })
+        case DELETE_ALERT:
+        return state.map(msg => {
+            if (action.id === msg.id) return {...msg, alert: '' }
+                return msg
+            })
         default:
             return state
     }

@@ -17,6 +17,7 @@ const ResponseForm = (props) => {
             <input className="form-control" type="keyword" name={`keyword${message.id}`} value={message.keyword || ''} onChange={onUpdate.bind(null, message.id)} />
           </div>
             <button type="submit" className="btn btn-primary">Save response</button>
+            {message.alert ? <span className="ml-3">{message.alert}</span> : null}
         </form>
     )
 }
