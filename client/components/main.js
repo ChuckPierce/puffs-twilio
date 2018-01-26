@@ -15,7 +15,7 @@ const Main = (props) => {
 
   return (
     <div className="appContainer">
-      <div>
+      <div className="imageContainer">
         <img src="/img/puffs_vertical.jpg" width="500px" height="100%" />
       </div>
       <div className="mainContainer">
