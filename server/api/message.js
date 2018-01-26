@@ -36,3 +36,14 @@ router.get('/', (req, res, next) => {
     .then(messages => res.json(messages))
     .catch(next)
 })
+
+router.delete('/:messageId', (req, res, next) => {
+  Message.destroy({ where: { id: req.params.messageId }})
+      .then(msg => {
+        res.json(msg)
+      })
+      .catch(err => {
+          next(err)
+      })
+  })
+

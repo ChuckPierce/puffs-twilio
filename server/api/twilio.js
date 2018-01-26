@@ -6,11 +6,11 @@ const { Message, Subscriber } = require('../db/models')
 module.exports = router
 
 router.post('/', (req, res, next) => {
-    const twiml = new MessagingResponse()
     let text = req.body.Body || ''
     text = text.toLowerCase().trim()
     const fromNumber = req.body.From
     Message.findAll().then(messages => {
+      const twiml = new MessagingResponse()
       messages.forEach(data => {
         const keyword = data.keyword && data.keyword.toLowerCase().trim()
         if (text === keyword) {
@@ -24,13 +24,10 @@ router.post('/', (req, res, next) => {
               sub.updateAttributes({ subscribed: true })
             }
           })
-          res.writeHead(200, {'Content-Type': 'text/xml'});
-          res.end(twiml.toString());
-        } else {
-          res.writeHead(200, {'Content-Type': 'text/xml'});
-          res.end(twiml.toString());
         }
       })
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(twiml.toString());
     })
   })
 

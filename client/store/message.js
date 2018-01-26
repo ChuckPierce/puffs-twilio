@@ -4,12 +4,14 @@ const GET_MESSAGES = 'GET_MESSAGES'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 const UPDATE_MESSAGES = 'UPDATE_MESSAGES'
 const CREATE_MESSAGE = 'CREATE_MESSAGE'
+const DELETE_MESSAGE = 'DELETE_MESSAGE'
 
 const defaultMessages = []
 
 const getMessages = msgs => ({ type: GET_MESSAGES, msgs})
 const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 const createMsg = msg => ({ type: CREATE_MESSAGE, msg})
+const deleteMsg = msg => ({ type: DELETE_MESSAGE, msg})
 
 export const updateMessages = valObj => ({ type: UPDATE_MESSAGES, valObj})
 
@@ -41,6 +43,13 @@ export const createMessage = () =>
             dispatch(createMsg(res.data))
         })
 
+export const deleteMessage = (id) =>
+    dispatch =>
+        axios.delete(`/api/message/${id}`)
+            .then(() => {
+                dispatch(deleteMsg(id))
+            })
+
 
 export default function (state = defaultMessages, action) {
     switch (action.type) {
@@ -57,6 +66,8 @@ export default function (state = defaultMessages, action) {
         case CREATE_MESSAGE:
             state.unshift(action.msg)
             return state.slice(0)
+        case DELETE_MESSAGE:
+            return state.filter(msg => msg.id !== action.msg)
         default:
             return state
     }
