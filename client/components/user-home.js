@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {message, sendMessage, updateMessages} from '../store'
+import {saveMessage, sendMessage, updateMessages} from '../store'
 import ResponseForm from './message-form'
 
 
@@ -12,10 +12,13 @@ export const UserHome = (props) => {
   const {messages, handleMessageSubmit, handlePhoneSubmit, handleMessageUpdate} = props
   return (
     <div className="formContainer">
-        <h4>Response message</h4>
-        {messages.map(msg => {
-          console.log(msg)
-          return <ResponseForm key={msg.id} onSubmit={handleMessageSubmit} onUpdate={handleMessageUpdate} message={msg} />
+        {messages.reverse().map((msg, i) => {
+          return (
+            <div key={msg.id}>
+              <h4>Response message {i + 1}</h4>
+              <ResponseForm onSubmit={handleMessageSubmit} onUpdate={handleMessageUpdate} message={msg} />
+            </div>
+          )
         })}
         <h4>Send a message</h4>
         <form onSubmit={handlePhoneSubmit} name="phoneSubmit">
@@ -46,10 +49,7 @@ const mapDispatch = (dispatch) => {
   return {
     handleMessageSubmit (msg, evt) {
       evt.preventDefault()
-      const text = evt.target.text.value
-      const url = evt.target.url.value
-      const newMessage = {...msg, text, url}
-      dispatch(message(newMessage))
+      dispatch(saveMessage(msg))
     },
     handlePhoneSubmit (evt) {
       evt.preventDefault()

@@ -5,7 +5,7 @@ const ResponseForm = (props) => {
     return (
         <form onSubmit={onSubmit.bind(null, message)} name="messageSubmit" className="mb-5">
           <div className="form-group">
-            <label htmlFor="message">Message</label>
+            <label htmlFor="message">Text</label>
             <textarea className="form-control" name={`text${message.id}`} value={message.text || ''} onChange={onUpdate.bind(null, message.id)} />
           </div>
           <div className="form-group">

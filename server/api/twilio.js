@@ -7,13 +7,14 @@ module.exports = router
 
 router.post('/', (req, res, next) => {
     const twiml = new MessagingResponse()
-    const message = twiml.message()
     let text = req.body.Body || ''
     text = text.toLowerCase().trim()
     const fromNumber = req.body.From
-    Message.findOne({where: {primary: true}}).then(data => {
-      const keyword = data.keyword && data.keyword.toLowerCase().trim()
-      if (text === keyword) {
+    Message.findAll().then(messages => {
+      messages.forEach(data => {
+        const keyword = data.keyword && data.keyword.toLowerCase().trim()
+        if (text === keyword) {
+          const message = twiml.message()
           message.body(data.text)
           if (data.url) message.media(data.url)
           Subscriber.findOne({ where: { phone: fromNumber }}).then(sub => {
@@ -30,6 +31,7 @@ router.post('/', (req, res, next) => {
           res.end(twiml.toString());
         }
       })
+    })
   })
 
 

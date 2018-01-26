@@ -11,11 +11,11 @@ const postMessage = msg => ({ type: SEND_MESSAGE, msg})
 
 export const updateMessages = valObj => ({ type: UPDATE_MESSAGES, valObj})
 
-export const message = msg =>
+export const saveMessage = msg =>
     dispatch =>
         axios.post('/api/message', { msg })
             .then(res => {
-                dispatch(getMessages(res.data))
+                dispatch(postMessage(res.data))
             })
 
 export const getUserMessages = () =>
