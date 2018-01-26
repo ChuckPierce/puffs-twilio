@@ -9,6 +9,7 @@ const Message = db.define('message', {
     keyword: {
       type: Sequelize.STRING,
       defaultValue: '',
+      unique: true,
     },
     url: {
       type: Sequelize.STRING,
